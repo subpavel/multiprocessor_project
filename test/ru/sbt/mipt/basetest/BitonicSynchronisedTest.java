@@ -7,7 +7,6 @@ import ru.sbt.mipt.structure.bitonic.Bitonic;
  */
 public class BitonicSynchronisedTest extends TimeTest {
 
-    private int numThread;
     private int size;
     private int tries;
     private Thread[] myThreads;

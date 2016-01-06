@@ -11,13 +11,13 @@ public class Tests {
 
     private final int tries = 1024 * 1024;
     private final int maxNumThread = 16;
-    private final int bitonicSize = 4;
 
 
     @Test
     public void baseLineIntegerTest() throws InterruptedException {
         for (int numThread = 1; numThread <= maxNumThread; numThread++) {
-            BaseSynchronizedTest baseSynchronizedTest = new BaseSynchronizedTest(BaseSynchronizedTest.IncrementType.SYNCHRONIZED_INTEGER, numThread, tries);
+            BaseSynchronizedTest baseSynchronizedTest = new BaseSynchronizedTest(
+                    BaseSynchronizedTest.IncrementType.SYNCHRONIZED_INTEGER, numThread, tries);
             makeTest(baseSynchronizedTest);
         }
     }
@@ -25,7 +25,8 @@ public class Tests {
     @Test
     public void baseLineAtomicIntegerTest() throws InterruptedException {
         for (int numThread = 1; numThread <= maxNumThread; numThread++) {
-            BaseSynchronizedTest baseSynchronizedTest = new BaseSynchronizedTest(BaseSynchronizedTest.IncrementType.ATOMIC_INTEGER, numThread, tries);
+            BaseSynchronizedTest baseSynchronizedTest = new BaseSynchronizedTest(
+                    BaseSynchronizedTest.IncrementType.ATOMIC_INTEGER, numThread, tries);
             makeTest(baseSynchronizedTest);
         }
     }
@@ -44,7 +45,8 @@ public class Tests {
 
     @Test
     public void bitonicTest() {
-        for (int numThread = 1; numThread < maxNumThread; numThread++) {
+        int bitonicSize = 8;
+        for (int numThread = 1; numThread <= maxNumThread; numThread++) {
             BitonicSynchronisedTest test = new BitonicSynchronisedTest(numThread, tries, bitonicSize);
             makeTest(test);
 
