@@ -8,13 +8,15 @@ import ru.sbt.mipt.structure.bitonic.Bitonic;
 public class BitonicSynchronisedTest extends TimeTest {
 
     private int numThread = 8;
-    private int size = 16;
+    private int size = 4;
+    private int valuesRange = 256;
     private Thread[] myThreads;
     private Bitonic bitonic;
 
-    public BitonicSynchronisedTest(int numThread, int size) {
+    public BitonicSynchronisedTest(int numThread, int valuesRange, int size) {
         this.numThread = numThread;
         this.size = size;
+        this.valuesRange = valuesRange;
     }
     @Override
     void prepareTest() {
@@ -29,7 +31,12 @@ public class BitonicSynchronisedTest extends TimeTest {
 
     @Override
     void doTest() throws InterruptedException {
-
+        for (int i = 0; i < numThread; i++) {
+            myThreads[i].start();
+        }
+        for (int i = 0; i < numThread; i++) {
+            myThreads[i].join();
+        }
     }
 
     private class ThreadsTraverseBitonic implements Runnable {
@@ -41,7 +48,9 @@ public class BitonicSynchronisedTest extends TimeTest {
 
         @Override
         public void run() {
-            bitonic.traverse(value);
+            for (int i = 0; i < valuesRange / numThread; i++) {
+                bitonic.traverse(value);
+            }
         }
     }
 }

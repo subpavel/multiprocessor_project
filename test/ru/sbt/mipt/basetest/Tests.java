@@ -13,6 +13,7 @@ public class Tests {
 
     private int maxNumThread = 64;
     private int valuesSize = 256;
+    private int bitonicSize = 4;
 
 
     @Test
@@ -36,7 +37,7 @@ public class Tests {
     @Test
     public void bitonicTest() {
         for (int numThread = 1; numThread < maxNumThread; numThread++) {
-            BitonicSynchronisedTest test = new BitonicSynchronisedTest(numThread, valuesSize);
+            BitonicSynchronisedTest test = new BitonicSynchronisedTest(numThread, valuesSize, bitonicSize);
             makeTest(test);
 
         }
