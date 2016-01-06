@@ -47,7 +47,7 @@ public class BitonicSynchronisedTest extends TimeTest {
 
         @Override
         public void run() {
-            for (int i = 0; i < tries; i++) {
+            for (int i = 0; i < tries/numThread; i++) {
                 bitonic.traverse(value);
             }
         }

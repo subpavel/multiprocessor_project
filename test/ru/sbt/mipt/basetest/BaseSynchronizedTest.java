@@ -63,7 +63,7 @@ public class BaseSynchronizedTest extends TimeTest {
 
         @Override
         public void run() {
-            for (int i = 0; i < tries; i++) {
+            for (int i = 0; i < tries/numThread; i++) {
                 int value = increment.getAndIncrement(index);
 
             }
