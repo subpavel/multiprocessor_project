@@ -1,4 +1,4 @@
-package ru.sbt.mipt.structure;
+package ru.sbt.mipt.structure.baseline;
 
 /**
  * Created by Anton on 06.01.16.

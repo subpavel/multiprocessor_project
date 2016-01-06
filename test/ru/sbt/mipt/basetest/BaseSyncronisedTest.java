@@ -1,6 +1,6 @@
 package ru.sbt.mipt.basetest;
 
-import ru.sbt.mipt.structure.BaseSychronisedIncrement;
+import ru.sbt.mipt.structure.baseline.BaseSychronisedIncrement;
 
 /**
  * Created by Anton on 06.01.16.

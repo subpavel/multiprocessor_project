@@ -12,15 +12,15 @@ public abstract class TimeTest {
     abstract void doTest() throws InterruptedException;
 
     public void startTest() {
-        prepareTest();
         long startTime = System.nanoTime();
+        prepareTest();
         try {
             doTest();
         } catch (InterruptedException e) {
             System.out.println(e.getClass());
         }
         long stopTime = System.nanoTime();
-        ;
+
         executeTimeInMs = stopTime - startTime;
     }
 
