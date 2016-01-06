@@ -17,10 +17,18 @@ public class Tests {
 
 
     @Test
-    public void baseLineTest() throws InterruptedException {
+    public void baseLineIntegerTest() throws InterruptedException {
         for (int numThread = 1; numThread < maxNumThread; numThread++) {
-            BaseSyncronisedTest baseSyncronisedTest = new BaseSyncronisedTest(numThread, valuesSize);
-            makeTest(baseSyncronisedTest);
+            BaseSynchronizedTest baseSynchronizedTest = new BaseSynchronizedTest(BaseSynchronizedTest.IncrementType.SYNCHRONIZED_INTEGER, numThread, valuesSize);
+            makeTest(baseSynchronizedTest);
+        }
+    }
+
+    @Test
+    public void baseLineAtomicIntegerTest() throws InterruptedException {
+        for (int numThread = 1; numThread < maxNumThread; numThread++) {
+            BaseSynchronizedTest baseSynchronizedTest = new BaseSynchronizedTest(BaseSynchronizedTest.IncrementType.ATOMIC_INTEGER, numThread, valuesSize);
+            makeTest(baseSynchronizedTest);
         }
     }
 
