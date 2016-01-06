@@ -6,6 +6,7 @@ package ru.sbt.mipt.basetest;
 public abstract class TimeTest {
 
     private long executeTimeInMs = 0;
+    protected int numThread = 8;
 
     abstract void prepareTest();
 
@@ -29,6 +30,6 @@ public abstract class TimeTest {
     }
 
     public void printTimeExecute() {
-        System.out.printf("time: %d ns \n", getExecuteTimeInMs());
+        System.out.printf("threads: %d  time: %d ns \n", numThread, getExecuteTimeInMs());
     }
 }

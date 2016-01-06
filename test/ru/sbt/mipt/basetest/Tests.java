@@ -24,18 +24,12 @@ public class Tests {
         }
     }
 
-    @Test
-    public void baseLineAtomicIntegerTest() throws InterruptedException {
-        for (int numThread = 1; numThread < maxNumThread; numThread++) {
-            BaseSynchronizedTest baseSynchronizedTest = new BaseSynchronizedTest(BaseSynchronizedTest.IncrementType.ATOMIC_INTEGER, numThread, valuesSize);
-            makeTest(baseSynchronizedTest);
-        }
-    }
-
 
     @Test
     public void treeTest() {
-        for (int numThread = 1; numThread < maxNumThread; numThread++) {
+//        for (int numThread = 2; numThread < maxNumThread; numThread*=2)
+        {
+            int numThread = 16;
             TreeSychronisedTest test = new TreeSychronisedTest(numThread, valuesSize);
             makeTest(test);
 

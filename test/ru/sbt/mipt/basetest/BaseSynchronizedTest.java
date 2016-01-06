@@ -13,7 +13,7 @@ public class BaseSynchronizedTest extends TimeTest {
     private int value;
 
     //defult value
-    private int numThread = 8;
+
     private int valuesRange = 16;
     private Thread[] myThreads;
     private BaseSynchronizedIncrement increment;
