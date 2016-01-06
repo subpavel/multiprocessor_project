@@ -33,6 +33,15 @@ public class Tests {
         }
     }
 
+    @Test
+    public void bitonicTest() {
+        for (int numThread = 1; numThread < maxNumThread; numThread++) {
+            BitonicSynchronisedTest test = new BitonicSynchronisedTest(numThread, valuesSize);
+            makeTest(test);
+
+        }
+    }
+
     private void makeTest(TimeTest test) {
         test.startTest();
         test.printTimeExecute();
