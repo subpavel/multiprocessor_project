@@ -7,16 +7,16 @@ import ru.sbt.mipt.structure.bitonic.Bitonic;
  */
 public class BitonicSynchronisedTest extends TimeTest {
 
-    private int numThread = 8;
-    private int size = 4;
-    private int valuesRange = 256;
+    private int numThread;
+    private int size;
+    private int tries;
     private Thread[] myThreads;
     private Bitonic bitonic;
 
-    public BitonicSynchronisedTest(int numThread, int valuesRange, int size) {
+    public BitonicSynchronisedTest(int numThread, int tries, int size) {
         this.numThread = numThread;
         this.size = size;
-        this.valuesRange = valuesRange;
+        this.tries = tries;
     }
     @Override
     void prepareTest() {
@@ -48,7 +48,7 @@ public class BitonicSynchronisedTest extends TimeTest {
 
         @Override
         public void run() {
-            for (int i = 0; i < valuesRange / numThread; i++) {
+            for (int i = 0; i < tries; i++) {
                 bitonic.traverse(value);
             }
         }

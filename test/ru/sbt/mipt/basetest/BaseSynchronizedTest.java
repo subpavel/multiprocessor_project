@@ -14,15 +14,15 @@ public class BaseSynchronizedTest extends TimeTest {
 
     //defult value
 
-    private int valuesRange = 16;
+    private int tries;
     private Thread[] myThreads;
     private BaseSynchronizedIncrement increment;
     private IncrementType incrementType;
 
 
-    public BaseSynchronizedTest(IncrementType incrementType, int numThread, int valuesRange) {
+    public BaseSynchronizedTest(IncrementType incrementType, int numThread, int tries) {
         this.numThread = numThread;
-        this.valuesRange = valuesRange;
+        this.tries = tries;
         this.incrementType = incrementType;
     }
 
@@ -63,7 +63,7 @@ public class BaseSynchronizedTest extends TimeTest {
 
         @Override
         public void run() {
-            for (int i = 0; i < valuesRange / numThread; i++) {
+            for (int i = 0; i < tries; i++) {
                 int value = increment.getAndIncrement(index);
 
             }
