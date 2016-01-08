@@ -9,13 +9,21 @@ public class ThreadID {
     // my thread-local ID
     private static LocalID threadID = new LocalID();
 
+
     public static int get() {
         return threadID.get();
     }
 
+    public static int maxThreadNum = 2;
+
+    public static void setMaxThreadNum(int num) {
+        maxThreadNum = num;
+    }
+
     static class LocalID extends ThreadLocal<Integer> {
         protected synchronized Integer initialValue() {
-            return nextID++;
+
+            return (nextID++) % maxThreadNum;
         }
     }
 }

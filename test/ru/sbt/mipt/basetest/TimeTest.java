@@ -1,20 +1,48 @@
 package ru.sbt.mipt.basetest;
 
+import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 /**
  * Created by Anton on 06.01.16.
  */
 public abstract class TimeTest {
 
+    protected int tries = 1024 * 1024;
     private long executeTimeInMs = 0;
     protected int numThread = 8;
+    protected TaskRunnable taskForTread;
+    protected ExecutorService executor;
+    protected List<Callable<Integer>> tasks;
 
-    abstract void prepareTest();
+    void prepareTest() {
+        executor = Executors.newFixedThreadPool(numThread);
+    }
 
-    abstract void doTest() throws InterruptedException;
+    public void doTest() throws InterruptedException {
+
+        if (tasks != null) {
+            executor.invokeAll(tasks);
+
+        } else {
+            for (int i = 0; i < numThread; i++) {
+                Runnable worker = taskForTread.instanceOf(i);
+                executor.execute(worker);
+            }
+        }
+        executor.shutdown();
+        while (!executor.isTerminated()) {
+        }
+
+
+    }
 
     public void startTest() {
-        long startTime = System.nanoTime();
         prepareTest();
+        long startTime = System.nanoTime();
         try {
             doTest();
         } catch (InterruptedException e) {
@@ -23,6 +51,7 @@ public abstract class TimeTest {
         long stopTime = System.nanoTime();
 
         executeTimeInMs = stopTime - startTime;
+//        System.out.println("Finished all threads");
     }
 
     public long getExecuteTimeInMs() {
@@ -30,6 +59,22 @@ public abstract class TimeTest {
     }
 
     public void printTimeExecute() {
-        System.out.printf("threads: %d  time: %d ns \n", numThread, getExecuteTimeInMs());
+//        System.out.printf("%d \n", getExecuteTimeInMs());
+        System.out.printf("threads: %d  time: %d ns \n", numThread, getExecuteTimeInMs() / tries);
     }
+
+
+    public void printTimeExecute(long executeTimeInMs) {
+//        System.out.printf("%d \n", getExecuteTimeInMs());
+        System.out.printf("threads: %d  time: %d ns \n", numThread, executeTimeInMs / tries);
+    }
+
+
+    public interface TaskRunnable extends Runnable {
+        TaskRunnable instanceOf(int index);
+    }
+
+
+    public abstract TimeTest instanceOf(Object[] args);
+
 }

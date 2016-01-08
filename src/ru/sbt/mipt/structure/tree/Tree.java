@@ -7,8 +7,7 @@ import java.util.Stack;
  */
 
 public class Tree {
-    private int THREADS = 8;
-    final static int TRIES = 1024 * 1024;
+
     Node[] leaf;
 
     /**
@@ -26,7 +25,7 @@ public class Tree {
         }
     }
 
-    public int getAndIncrement() throws InterruptedException {
+    public int getAndIncrement(int index) throws InterruptedException {
         Stack<Node> stack = new Stack<Node>();
         Node myLeaf = leaf[ThreadID.get() / 2];
         Node node = myLeaf;
