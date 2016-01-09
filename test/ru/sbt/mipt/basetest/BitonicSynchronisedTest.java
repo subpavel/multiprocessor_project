@@ -1,9 +1,10 @@
 package ru.sbt.mipt.basetest;
 
+import ru.sbt.mipt.structure.CountingThread;
+import ru.sbt.mipt.structure.ThreadArg;
 import ru.sbt.mipt.structure.bitonic.Bitonic;
+import ru.sbt.mipt.structure.bitonic.CountingBitonicThread;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.Callable;
 
 /**
@@ -27,17 +28,17 @@ public class BitonicSynchronisedTest extends TimeTest {
     @Override
     void prepareTest() {
         super.prepareTest();
-//        myThreads = new Thread[numThread];
-//        for (int index = 0; index < numThread; index++) {
-//            myThreads[index] = new Thread(new ThreadsTraverseBitonic(index));
+        myThreads = new CountingThread[numThread];
+        bitonic = new Bitonic(size);
+        for (int index = 0; index < numThread; index++) {
+            myThreads[index] = new CountingBitonicThread(new ThreadArg(index, bitonic, tries / numThread));
+        }
+//
+//        tasks = new ArrayList<>();//[numThread];
+//        for (int i = 0; i < numThread; i++) {
+//            tasks.add(new ThreadsTraverseBitonic2(i));
 //        }
 
-        tasks = new ArrayList<>();//[numThread];
-        for (int i = 0; i < numThread; i++) {
-            tasks.add(new ThreadsTraverseBitonic2(i));
-        }
-
-        bitonic = new Bitonic(size);
     }
 
     @Override
@@ -50,7 +51,7 @@ public class BitonicSynchronisedTest extends TimeTest {
     }
 
 //    @Override
-//    void doTest() throws InterruptedException {
+//    public void doTest() throws InterruptedException {
 //        for (int i = 0; i < numThread; i++) {
 //            myThreads[i].start();
 //        }

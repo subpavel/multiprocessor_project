@@ -9,7 +9,12 @@ public class Balancer implements Network {
   public Balancer() {
     toggle = true;
   }
-  
+
+  @Override
+  public int getAndIncrement() throws InterruptedException {
+    return 0;
+  }
+
   public synchronized int traverse(int input) {
     try {
       if (toggle) {

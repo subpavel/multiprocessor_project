@@ -36,8 +36,9 @@ public class Tests {
                 times += baseSynchronizedTest.getExecuteTimeInMs();
             }
 
-            printTimeExecute(numThread, times / nRepeats);
-            resultValues.put(numThread, (int) (times / nRepeats));
+            double val = (double) times / nRepeats;
+            printTimeExecute(numThread, (long) val);
+            resultValues.put(numThread, (int) (val) / tries);
 
         }
         results.add(new ResultClass("int", resultValues));
@@ -54,9 +55,9 @@ public class Tests {
                 makeTest(baseSynchronizedTest);
                 times += baseSynchronizedTest.getExecuteTimeInMs();
             }
-
-            printTimeExecute(numThread, times / nRepeats);
-            resultValues.put(numThread, (int) (times / nRepeats));
+            double val = (double) times / nRepeats;
+            printTimeExecute(numThread, (long) val);
+            resultValues.put(numThread, (int) (val) / tries);
         }
         results.add(new ResultClass("atom", resultValues));
     }
@@ -65,7 +66,7 @@ public class Tests {
     @Test
     public void treeTest() {
         Map<Integer, Integer> resultValues = new HashMap<>();
-        for (int numThread = 3; numThread <= maxNumThread; numThread *= 2) {
+        for (int numThread = 2; numThread <= maxNumThread; numThread *= 2) {
             long times = 0;
 //            int numThread = 3;
             for (int nTour = 0; nTour < nRepeats; nTour++) {
@@ -73,9 +74,23 @@ public class Tests {
                 makeTest(test);
                 times += test.getExecuteTimeInMs();
             }
-            printTimeExecute(numThread, times / nRepeats);
-            resultValues.put(numThread, (int) (times / nRepeats));
+            double val = (double) times / nRepeats;
+            printTimeExecute(numThread, (long) val);
+//            resultValues.put(numThread, (int) (val) /tries);
+        }
 
+
+        for (int numThread = 2; numThread <= maxNumThread; numThread *= 2) {
+            long times = 0;
+//            int numThread = 3;
+            for (int nTour = 0; nTour < nRepeats; nTour++) {
+                TreeSychronisedTest test = new TreeSychronisedTest(numThread, tries);
+                makeTest(test);
+                times += test.getExecuteTimeInMs();
+            }
+            double val = (double) times / nRepeats;
+            printTimeExecute(numThread, (long) val);
+            resultValues.put(numThread, (int) (val) / tries);
         }
         results.add(new ResultClass("tree", resultValues));
     }
@@ -94,8 +109,9 @@ public class Tests {
                 times += test.getExecuteTimeInMs();
             }
 
-            printTimeExecute(numThread, times / nRepeats);
-            resultValues.put(numThread, (int) (times / nRepeats));
+            double val = (double) times / nRepeats;
+            printTimeExecute(numThread, (long) val);
+            resultValues.put(numThread, (int) (val) / tries);
 
         }
         results.add(new ResultClass("bitonic", resultValues));
@@ -109,7 +125,7 @@ public class Tests {
 
 
     public void printTimeExecute(int numThread, long executeTimeInMs) {
-//        System.out.printf("%d \n", getExecuteTimeInMs());
+        System.out.printf("%f, \n", (double) (tries) / executeTimeInMs);
         System.out.printf("threads: %d  time: %d ns \n", numThread, executeTimeInMs / tries);
     }
 
@@ -138,15 +154,9 @@ public class Tests {
     public static void writeFileResult() throws IOException {
 
         String sep = " ";
-        String filePath = new Date() + "result.txt";
-        FileOutputStream out;
-        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filePath)));
+        String filePath = "report/" + new Date() + "result.txt";
 
-        try {
-            out = new FileOutputStream(new Date() + "result.txt");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filePath)));
 
         StringBuffer buffer = new StringBuffer();
         buffer.append(" " + sep);
@@ -172,6 +182,14 @@ public class Tests {
         }
 
         writer.flush();
+
+    }
+
+    public static void main(String[] args) {
+
+        Tests tests = new Tests();
+        tests.treeTest();
+
 
     }
 

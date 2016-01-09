@@ -12,4 +12,14 @@ public class AtomicIntegerIncrement implements BaseSynchronizedIncrement{
     public int getAndIncrement(int increment) {
         return value.getAndAdd(increment);
     }
+
+    @Override
+    public int getAndIncrement() throws InterruptedException {
+        return getAndIncrement(1);
+    }
+
+    @Override
+    public int traverse(int input) {
+        return 0;
+    }
 }

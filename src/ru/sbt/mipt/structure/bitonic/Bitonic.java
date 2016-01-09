@@ -18,6 +18,12 @@ public class Bitonic implements Network {
         }
     }
 
+    @Override
+    public int getAndIncrement() throws InterruptedException {
+        System.out.println("don't support");
+        return 0;
+    }
+
     public int traverse(int input) {
         int output = 0;
         if (size > 2) {

@@ -1,7 +1,10 @@
 package ru.sbt.mipt.basetest;
 
+import ru.sbt.mipt.structure.CountingThread;
+import ru.sbt.mipt.structure.ThreadArg;
 import ru.sbt.mipt.structure.baseline.AtomicIntegerIncrement;
 import ru.sbt.mipt.structure.baseline.BaseSynchronizedIncrement;
+import ru.sbt.mipt.structure.baseline.CountingBaseThread;
 import ru.sbt.mipt.structure.baseline.IntegerSychronisedIncrement;
 
 import java.util.concurrent.ExecutorService;
@@ -28,7 +31,7 @@ public class BaseSynchronizedTest extends TimeTest {
         this.tries = tries;
         this.incrementType = incrementType;
 
-        taskForTread = new ThreadsGetAdd(0);
+//        taskForTread = new ThreadsGetAdd(0);
 
     }
 
@@ -43,10 +46,10 @@ public class BaseSynchronizedTest extends TimeTest {
                 increment = new IntegerSychronisedIncrement();
         }
 
-//        taskExecutor.myThreads = new Thread[numThread];
-//        for (int index = 0; index < numThread; index++) {
-//            myThreads[index] = new Thread(new ThreadsGetAdd(index));
-//        }
+        myThreads = new CountingThread[numThread];
+        for (int index = 0; index < numThread; index++) {
+            myThreads[index] = new CountingBaseThread(new ThreadArg(index, increment, tries /numThread ));
+        }
     }
 
     @Override

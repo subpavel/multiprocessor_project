@@ -1,19 +1,24 @@
 package ru.sbt.mipt.structure.tree;
 
+import ru.sbt.mipt.structure.CountingStructure;
+import ru.sbt.mipt.structure.CountingThread;
+
 import java.util.Stack;
 
 /**
  * Created by Anton on 06.01.16.
  */
 
-public class Tree {
+public class Tree implements CountingStructure {
 
-    Node[] leaf;
+    private final int size;
+    private final Node[] leaf;
 
     /**
      * Creates a new instance of Combine
      */
     public Tree(int size) {
+        this.size = size;
         Node[] nodes = new Node[size - 1];
         nodes[0] = new Node();
         for (int i = 1; i < nodes.length; i++) {
@@ -25,9 +30,13 @@ public class Tree {
         }
     }
 
-    public int getAndIncrement(int index) throws InterruptedException {
+    public int getAndIncrement() throws InterruptedException {
         Stack<Node> stack = new Stack<Node>();
-        Node myLeaf = leaf[ThreadID.get() / 2];
+//        CountingTreeThread thread = ;
+//        int enter = (((CountingTreeThread) Thread.currentThread()).getThreadId() / 2) % leaf.length;
+
+        Node myLeaf = leaf[(((CountingTreeThread) Thread.currentThread()).getThreadId() / 2) % leaf.length];
+//                .getThreadId())%(size + 1) / 2 /2];//ThreadID.get() / 2];
         Node node = myLeaf;
         // phase one
         while (node.precombine()) {
@@ -50,6 +59,43 @@ public class Tree {
             node.distribute(prior);
         }
         return prior;
+    }
+
+    @Override
+    public int traverse(int input) throws InterruptedException {
+        Stack<Node> stack = new Stack<Node>();
+//        CountingTreeThread thread = ;
+//        int enter = (((CountingTreeThread) Thread.currentThread()).getThreadId() / 2) % leaf.length;
+
+        Node myLeaf = leaf[input/2];
+//                .getThreadId())%(size + 1) / 2 /2];//ThreadID.get() / 2];
+        Node node = myLeaf;
+        // phase one
+        while (node.precombine()) {
+            node = node.parent;
+        }
+        Node stop = node;
+        // phase two
+        node = myLeaf;
+        int combined = 1;
+        while (node != stop) {
+            combined = node.combine(combined);
+            stack.push(node);
+            node = node.parent;
+        }
+        // phase 3
+        int prior = stop.op(combined);
+        // phase 4
+        while (!stack.empty()) {
+            node = stack.pop();
+            node.distribute(prior);
+        }
+        return prior;
+
+
+
+//        System.out.println("don't support this function for tree");
+//        return 0;
     }
 
 }

@@ -1,5 +1,7 @@
 package ru.sbt.mipt.basetest;
 
+import ru.sbt.mipt.structure.CountingThread;
+
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.Callable;
@@ -17,27 +19,39 @@ public abstract class TimeTest {
     protected TaskRunnable taskForTread;
     protected ExecutorService executor;
     protected List<Callable<Integer>> tasks;
+    protected CountingThread[] myThreads;
 
     void prepareTest() {
         executor = Executors.newFixedThreadPool(numThread);
     }
 
+//    public void doTest() throws InterruptedException {
+////
+////        if (tasks != null) {
+////            executor.invokeAll(tasks);
+////
+////        } else {
+////            for (int i = 0; i < numThread; i++) {
+////                Runnable worker = taskForTread.instanceOf(i);
+////                executor.execute(worker);
+////            }
+////        }
+////        executor.shutdown();
+////        while (!executor.isTerminated()) {
+////        }
+//
+//
+//    }
+
+
     public void doTest() throws InterruptedException {
 
-        if (tasks != null) {
-            executor.invokeAll(tasks);
-
-        } else {
-            for (int i = 0; i < numThread; i++) {
-                Runnable worker = taskForTread.instanceOf(i);
-                executor.execute(worker);
-            }
+        for (int i = 0; i < numThread; i++) {
+            myThreads[i].start();
         }
-        executor.shutdown();
-        while (!executor.isTerminated()) {
+        for (int i = 0; i < numThread; i++) {
+            myThreads[i].join();
         }
-
-
     }
 
     public void startTest() {

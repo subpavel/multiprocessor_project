@@ -1,6 +1,7 @@
 package ru.sbt.mipt.basetest;
 
-import ru.sbt.mipt.structure.tree.ThreadID;
+import ru.sbt.mipt.structure.ThreadArg;
+import ru.sbt.mipt.structure.tree.CountingTreeThread;
 import ru.sbt.mipt.structure.tree.Tree;
 
 /**
@@ -8,9 +9,6 @@ import ru.sbt.mipt.structure.tree.Tree;
  */
 public class TreeSychronisedTest extends TimeTest {
 
-
-    //    final static int TRIES = 1024 * 1024;
-//    private Thread[] myThreads;
     private Tree tree;
 
 
@@ -18,19 +16,20 @@ public class TreeSychronisedTest extends TimeTest {
         this.numThread = numThread;
         this.tries = tries;
 
-        taskForTread = new ThreadsGetAdd(0);
-        ThreadID.setMaxThreadNum(numThread);
+//        taskForTread = new ThreadsGetAdd(0);
+//        ThreadID.setMaxThreadNum(numThread);
 
     }
 
     @Override
     void prepareTest() {
-        super.prepareTest();
-        tree = new Tree(numThread);//(int) (numThread * Math.log(numThread)));
-//        myThreads = new Thread[numThread];
-//        for (int index = 0; index < numThread; index++) {
-//            myThreads[index] = new Thread(new ThreadsGetAdd(index));
-//        }
+//        super.prepareTest();
+        tree = new Tree(numThread);
+//        (int) (numThread * Math.log(numThread)));
+        myThreads = new ru.sbt.mipt.structure.CountingThread[numThread];
+        for (int index = 0; index < numThread; index++) {
+            myThreads[index] = new CountingTreeThread(new ThreadArg(index, tree, tries / numThread));
+        }
 
         // > 2 ? (int) (numThread * Math.log(numThread)) : 2);
     }
@@ -41,17 +40,6 @@ public class TreeSychronisedTest extends TimeTest {
         Integer tries = (Integer) args[1];
         return new TreeSychronisedTest(numThread, tries);
     }
-
-//    @Override
-//    void doTest() throws InterruptedException {
-//
-//        for (int i = 0; i < numThread; i++) {
-//            myThreads[i].start();
-//        }
-//        for (int i = 0; i < numThread; i++) {
-//            myThreads[i].join();
-//        }
-//    }
 
     private class ThreadsGetAdd implements TaskRunnable {
         int index;
@@ -65,7 +53,7 @@ public class TreeSychronisedTest extends TimeTest {
         public void run() {
             try {
                 for (int j = 0; j < tries / numThread; j++) {
-                    int i = tree.getAndIncrement(index);
+                    int i = tree.getAndIncrement();
                 }
 
             } catch (InterruptedException e) {
