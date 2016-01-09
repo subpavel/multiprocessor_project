@@ -76,14 +76,14 @@ public class Tests {
                 TimeTest test = strategy.getTest(argsTest);
                 test.startTest();
                 times += test.getExecuteTimeInMs();
-                latency += test.getLatency()/nRepeats;
+                latency += test.getLatency() / nRepeats;
             }
 
             if (checkTime) {
                 double valMeanTime = (double) times / nRepeats;
                 printTimeExecute(numThread, (long) valMeanTime, latency);
                 resultLatVals.put(numThread, latency);
-                resultThrVals.put(numThread, (valMeanTime) / tries);
+                resultThrVals.put(numThread, 1.0 * tries / valMeanTime);
             }
         }
         if (checkTime) {
@@ -95,7 +95,7 @@ public class Tests {
     public void printTimeExecute(int numThread, long executeTimeInMs, double latency) {
         System.out.printf("threads: %d \n", numThread);
         System.out.printf("latency %f, \n", latency);
-        System.out.printf("throughput %f \n", (double) (executeTimeInMs) / tries);
+        System.out.printf("throughput %f \n", tries * 1.0 / executeTimeInMs);
     }
 
 
