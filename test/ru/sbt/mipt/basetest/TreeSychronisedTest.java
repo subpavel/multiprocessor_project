@@ -31,7 +31,7 @@ public class TreeSychronisedTest extends TimeTest {
 //        (int) (numThread * Math.log(numThread)));
         myThreads = new ru.sbt.mipt.structure.CountingThread[numThread];
         for (int index = 0; index < numThread; index++) {
-            myThreads[index] = new CountingTreeThread(new ThreadArg(index, tree, tries / numThread));
+            myThreads[index] = new CountingTreeThread(new ThreadArg(index, tree, tries / numThread, barrier));
         }
 
         // > 2 ? (int) (numThread * Math.log(numThread)) : 2);

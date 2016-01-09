@@ -46,7 +46,7 @@ public class BaseSynchronizedTest extends TimeTest {
 
         myThreads = new CountingThread[numThread];
         for (int index = 0; index < numThread; index++) {
-            myThreads[index] = new CountingBaseThread(new ThreadArg(index, increment, tries / numThread));
+            myThreads[index] = new CountingBaseThread(new ThreadArg(index, increment, tries / numThread, barrier));
         }
     }
 

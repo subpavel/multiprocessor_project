@@ -4,9 +4,7 @@ import ru.sbt.mipt.structure.CountingThread;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 
 /**
  * Created by Anton on 06.01.16.
@@ -15,7 +13,7 @@ public abstract class TimeTest {
 
     protected int tries = 1024 * 1024;
     private long executeTimeInMs = 0;
-    protected int numThread = 8;
+    protected int numThread = 10;
     protected TaskRunnable taskForTread;
     protected ExecutorService executor;
     protected List<Callable<Integer>> tasks;
@@ -23,9 +21,12 @@ public abstract class TimeTest {
 
     protected long difTime = 0;
     protected double latency = 0;
+    protected CyclicBarrier barrier;
 
     protected void prepareTest() {
-        executor = Executors.newFixedThreadPool(numThread);
+//        executor = Executors.newFixedThreadPool(numThread);
+        barrier = new CyclicBarrier(numThread);
+
     }
 
 //    public void doTest() throws InterruptedException {
@@ -52,6 +53,16 @@ public abstract class TimeTest {
         for (int i = 0; i < numThread; i++) {
             myThreads[i].start();
         }
+
+
+//        try {
+//            barrier.await();
+//            System.out.println("all thread reach");
+//        } catch (BrokenBarrierException e) {
+//            e.printStackTrace();
+//        }
+
+
         for (int i = 0; i < numThread; i++) {
             myThreads[i].join();
         }
@@ -61,7 +72,7 @@ public abstract class TimeTest {
         }
 
         for (int i = 0; i < numThread; i++) {
-            latency += myThreads[i].latency/numThread;
+            latency += myThreads[i].latency / numThread;
         }
 
     }
@@ -107,8 +118,6 @@ public abstract class TimeTest {
     public interface TaskRunnable extends Runnable {
         TaskRunnable instanceOf(int index);
     }
-
-
 
 
 }

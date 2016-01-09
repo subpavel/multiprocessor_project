@@ -31,7 +31,7 @@ public class BitonicSynchronisedTest extends TimeTest {
         myThreads = new CountingThread[numThread];
         bitonic = new Bitonic(size);
         for (int index = 0; index < numThread; index++) {
-            myThreads[index] = new CountingBitonicThread(new ThreadArg(index, bitonic, tries / numThread));
+            myThreads[index] = new CountingBitonicThread(new ThreadArg(index, bitonic, tries / numThread, barrier));
         }
 
     }

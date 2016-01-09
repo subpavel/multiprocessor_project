@@ -3,6 +3,7 @@ package ru.sbt.mipt.structure;
 import ru.sbt.mipt.structure.tree.PanicException;
 
 import java.util.Timer;
+import java.util.concurrent.BrokenBarrierException;
 
 /**
  * Created by Anton on 08.01.16.
@@ -31,13 +32,14 @@ public abstract class CountingThread extends Thread {
     @Override
     public void run() {
         int value;
+        waitOtherBarrier();
         try {
             long starTime = System.nanoTime();
             int N = argThread.getCountTimesRepOp();
             for (int i = 0; i < N; i++) {
                 long latencyStart = System.nanoTime();
                 value = doOperation();
-                latency += (System.nanoTime() - latencyStart)/N;
+                latency += (System.nanoTime() - latencyStart) / N;
 //            System.out.println("Thread " + threadId + ": " + value);
             }
             difTime = System.nanoTime() - starTime;
@@ -46,6 +48,19 @@ public abstract class CountingThread extends Thread {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    private void waitOtherBarrier() {
+        try {
+//            System.out.println("wait other");
+            argThread.getCyclicBarrier().await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (BrokenBarrierException e) {
+            e.printStackTrace();
+        }
+
+//        System.out.println("contuniu work thread");
     }
 
 }
