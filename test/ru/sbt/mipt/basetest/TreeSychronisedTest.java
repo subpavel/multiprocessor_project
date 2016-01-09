@@ -1,5 +1,8 @@
 package ru.sbt.mipt.basetest;
 
+import ru.sbt.mipt.basetest.test.ArgsTest;
+import ru.sbt.mipt.basetest.test.TestStrategy;
+import ru.sbt.mipt.basetest.test.TimeTest;
 import ru.sbt.mipt.structure.ThreadArg;
 import ru.sbt.mipt.structure.tree.CountingTreeThread;
 import ru.sbt.mipt.structure.tree.Tree;
@@ -22,7 +25,7 @@ public class TreeSychronisedTest extends TimeTest {
     }
 
     @Override
-    void prepareTest() {
+    protected void prepareTest() {
 //        super.prepareTest();
         tree = new Tree(numThread);
 //        (int) (numThread * Math.log(numThread)));
@@ -34,36 +37,26 @@ public class TreeSychronisedTest extends TimeTest {
         // > 2 ? (int) (numThread * Math.log(numThread)) : 2);
     }
 
-    @Override
-    public TimeTest instanceOf(Object[] args) {
-        Integer numThread = (Integer) args[0];
-        Integer tries = (Integer) args[1];
+
+    public static TimeTest instanceOf(ArgsTest args) {
+        Integer numThread = args.getNumThreads();
+        Integer tries = args.getTries();
         return new TreeSychronisedTest(numThread, tries);
     }
 
-    private class ThreadsGetAdd implements TaskRunnable {
-        int index;
 
-        public ThreadsGetAdd(int value) {
-            index = value;
-        }
-
+    public static class TreeTestStrategy implements TestStrategy {
+        String nameTest = "Combining tree";
 
         @Override
-        public void run() {
-            try {
-                for (int j = 0; j < tries / numThread; j++) {
-                    int i = tree.getAndIncrement();
-                }
-
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+        public TimeTest getTest(ArgsTest argsTest) {
+            return TreeSychronisedTest.instanceOf(argsTest);
         }
 
         @Override
-        public TaskRunnable instanceOf(int index) {
-            return new ThreadsGetAdd(index);
+        public String getNameTest() {
+            return nameTest;
         }
     }
+
 }

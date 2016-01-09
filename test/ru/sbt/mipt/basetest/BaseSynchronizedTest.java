@@ -1,14 +1,14 @@
 package ru.sbt.mipt.basetest;
 
+import ru.sbt.mipt.basetest.test.ArgsTest;
+import ru.sbt.mipt.basetest.test.TestStrategy;
+import ru.sbt.mipt.basetest.test.TimeTest;
 import ru.sbt.mipt.structure.CountingThread;
 import ru.sbt.mipt.structure.ThreadArg;
 import ru.sbt.mipt.structure.baseline.AtomicIntegerIncrement;
 import ru.sbt.mipt.structure.baseline.BaseSynchronizedIncrement;
 import ru.sbt.mipt.structure.baseline.CountingBaseThread;
 import ru.sbt.mipt.structure.baseline.IntegerSychronisedIncrement;
-
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /**
  * Created by Anton on 06.01.16.
@@ -19,7 +19,6 @@ public class BaseSynchronizedTest extends TimeTest {
     private int value;
 
     //defult value
-
 
 
     private BaseSynchronizedIncrement increment;
@@ -36,7 +35,7 @@ public class BaseSynchronizedTest extends TimeTest {
     }
 
     @Override
-    void prepareTest() {
+    protected void prepareTest() {
         super.prepareTest();
         switch (incrementType) {
             case ATOMIC_INTEGER:
@@ -48,59 +47,32 @@ public class BaseSynchronizedTest extends TimeTest {
 
         myThreads = new CountingThread[numThread];
         for (int index = 0; index < numThread; index++) {
-            myThreads[index] = new CountingBaseThread(new ThreadArg(index, increment, tries /numThread ));
+            myThreads[index] = new CountingBaseThread(new ThreadArg(index, increment, tries / numThread));
         }
     }
 
-    @Override
-    public TimeTest instanceOf(Object[] args) {
-        IncrementType incrementType = (IncrementType) args[0];
-        Integer numThread = (Integer) args[1];
-        Integer tries = (Integer) args[2];
+
+    public static TimeTest instanceOf(ArgsTest args) {
+        IncrementType incrementType = (IncrementType) args.getSpecificArg();
+        Integer numThread = args.getNumThreads();
+        Integer tries = args.getTries();
         return new BaseSynchronizedTest(incrementType, numThread, tries);
     }
 
+    public static class BaseSynchronizedTestStrategy implements TestStrategy {
 
-    //
-//    @Override
-//    void doTest() throws InterruptedException {
-//        ExecutorService executor = Executors.newFixedThreadPool(numThread);
-//        for (int i = 0; i < numThread; i++) {
-//            Runnable worker = taskForTread.instanceOf(i);
-//            executor.execute(worker);
-//        }
-//        executor.shutdown();
-//        while (!executor.isTerminated()) {
-//        }
-//
-//
-////
-////        for (int i = 0; i < numThread; i++) {
-////            myThreads[i].start();
-////        }
-////        for (int i = 0; i < numThread; i++) {
-////            myThreads[i].join();
-////        }
-//    }
+        private String nameTest;
 
+        @Override
+        public TimeTest getTest(ArgsTest argsTest) {
+            nameTest = ((IncrementType) argsTest.getSpecificArg()).name();
+            return BaseSynchronizedTest.instanceOf(argsTest);
 
-    class ThreadsGetAdd implements TimeTest.TaskRunnable {
-        private final int index;
-
-        public ThreadsGetAdd(int index) {
-            this.index = index;
         }
 
         @Override
-        public void run() {
-            for (int i = 0; i < tries / numThread; i++) {
-                int value = increment.getAndIncrement(index);
-            }
-        }
-
-        @Override
-        public TaskRunnable instanceOf(int index) {
-            return new ThreadsGetAdd(index);
+        public String getNameTest() {
+            return nameTest;
         }
     }
 

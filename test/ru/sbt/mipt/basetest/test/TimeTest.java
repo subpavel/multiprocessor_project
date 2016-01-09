@@ -1,4 +1,4 @@
-package ru.sbt.mipt.basetest;
+package ru.sbt.mipt.basetest.test;
 
 import ru.sbt.mipt.structure.CountingThread;
 
@@ -21,7 +21,9 @@ public abstract class TimeTest {
     protected List<Callable<Integer>> tasks;
     protected CountingThread[] myThreads;
 
-    void prepareTest() {
+    protected long difTime = 0;
+
+    protected void prepareTest() {
         executor = Executors.newFixedThreadPool(numThread);
     }
 
@@ -52,6 +54,11 @@ public abstract class TimeTest {
         for (int i = 0; i < numThread; i++) {
             myThreads[i].join();
         }
+
+        for (int i = 0; i < numThread; i++) {
+            difTime += myThreads[i].difTime;
+        }
+
     }
 
     public void startTest() {
@@ -72,6 +79,10 @@ public abstract class TimeTest {
         return executeTimeInMs;
     }
 
+    public long getAllThreadTime() {
+        return difTime / numThread;
+    }
+
     public void printTimeExecute() {
 //        System.out.printf("%d \n", getExecuteTimeInMs());
         System.out.printf("threads: %d  time: %d ns \n", numThread, getExecuteTimeInMs() / tries);
@@ -89,6 +100,6 @@ public abstract class TimeTest {
     }
 
 
-    public abstract TimeTest instanceOf(Object[] args);
+
 
 }

@@ -14,16 +14,16 @@ public class ThreadID {
         return threadID.get();
     }
 
-    public static int maxThreadNum = 2;
+//    public static int maxThreadNum = 2;
 
-    public static void setMaxThreadNum(int num) {
-        maxThreadNum = num;
-    }
+//    public static void setMaxThreadNu m(int num) {
+//        maxThreadNum = num;
+//    }
 
     static class LocalID extends ThreadLocal<Integer> {
         protected synchronized Integer initialValue() {
 
-            return (nextID++) % maxThreadNum;
+            return (nextID++) ;//% maxThreadNum;
         }
     }
 }

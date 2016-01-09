@@ -1,10 +1,12 @@
 package ru.sbt.mipt.basetest;
 
-import javafx.scene.shape.Path;
-
 import org.junit.AfterClass;
-import org.junit.Before;
 import org.junit.Test;
+import ru.sbt.mipt.basetest.test.ArgsTest;
+import ru.sbt.mipt.basetest.test.ResultData;
+import ru.sbt.mipt.basetest.test.TestStrategy;
+import ru.sbt.mipt.basetest.test.TimeTest;
+import ru.sbt.mipt.basetest.util.ReportUtil;
 
 import java.io.*;
 import java.util.*;
@@ -19,179 +21,95 @@ public class Tests {
     private final int tries = 1024 * 1024;
     private static final int maxNumThread = 32;
     private int nRepeats = 10;
-
-    private static List<ResultClass> results = new ArrayList<>();
-
+    private static List<ResultData> results = new ArrayList<>();
 
     @Test
     public void baseLineIntegerTest() throws InterruptedException {
-        Map<Integer, Integer> resultValues = new HashMap<>();
+        makeTest(new BaseSynchronizedTest.BaseSynchronizedTestStrategy(),
+                BaseSynchronizedTest.IncrementType.SYNCHRONIZED_INTEGER
+        );
 
-        for (int numThread = 1; numThread <= maxNumThread; numThread++) {
-            long times = 0;
-            for (int nTour = 0; nTour < nRepeats; nTour++) {
-                BaseSynchronizedTest baseSynchronizedTest = new BaseSynchronizedTest(
-                        BaseSynchronizedTest.IncrementType.SYNCHRONIZED_INTEGER, numThread, tries);
-                makeTest(baseSynchronizedTest);
-                times += baseSynchronizedTest.getExecuteTimeInMs();
-            }
-
-            double val = (double) times / nRepeats;
-            printTimeExecute(numThread, (long) val);
-            resultValues.put(numThread, (int) (val) / tries);
-
-        }
-        results.add(new ResultClass("int", resultValues));
     }
 
     @Test
     public void baseLineAtomicIntegerTest() throws InterruptedException {
-        Map<Integer, Integer> resultValues = new HashMap<>();
-        for (int numThread = 1; numThread <= maxNumThread; numThread++) {
-            long times = 0;
-            for (int nTour = 0; nTour < nRepeats; nTour++) {
-                BaseSynchronizedTest baseSynchronizedTest = new BaseSynchronizedTest(
-                        BaseSynchronizedTest.IncrementType.ATOMIC_INTEGER, numThread, tries);
-                makeTest(baseSynchronizedTest);
-                times += baseSynchronizedTest.getExecuteTimeInMs();
-            }
-            double val = (double) times / nRepeats;
-            printTimeExecute(numThread, (long) val);
-            resultValues.put(numThread, (int) (val) / tries);
-        }
-        results.add(new ResultClass("atom", resultValues));
+        makeTest(new BaseSynchronizedTest.BaseSynchronizedTestStrategy(),
+                BaseSynchronizedTest.IncrementType.ATOMIC_INTEGER
+        );
     }
 
 
     @Test
     public void treeTest() {
-        Map<Integer, Integer> resultValues = new HashMap<>();
-        for (int numThread = 2; numThread <= maxNumThread; numThread *= 2) {
-            long times = 0;
-//            int numThread = 3;
-            for (int nTour = 0; nTour < nRepeats; nTour++) {
-                TreeSychronisedTest test = new TreeSychronisedTest(numThread, tries);
-                makeTest(test);
-                times += test.getExecuteTimeInMs();
-            }
-            double val = (double) times / nRepeats;
-            printTimeExecute(numThread, (long) val);
-//            resultValues.put(numThread, (int) (val) /tries);
-        }
+        makeTest(new TreeSychronisedTest.TreeTestStrategy(),
+                null
+        );
 
-
-        for (int numThread = 2; numThread <= maxNumThread; numThread *= 2) {
-            long times = 0;
-//            int numThread = 3;
-            for (int nTour = 0; nTour < nRepeats; nTour++) {
-                TreeSychronisedTest test = new TreeSychronisedTest(numThread, tries);
-                makeTest(test);
-                times += test.getExecuteTimeInMs();
-            }
-            double val = (double) times / nRepeats;
-            printTimeExecute(numThread, (long) val);
-            resultValues.put(numThread, (int) (val) / tries);
-        }
-        results.add(new ResultClass("tree", resultValues));
     }
 
     @Test
     public void bitonicTest() {
-        int bitonicSize = 8;
 
-        Map<Integer, Integer> resultValues = new HashMap<>();
-        for (int numThread = 1; numThread <= maxNumThread; numThread++) {
-            long times = 0;
-            for (int nTour = 0; nTour < nRepeats; nTour++) {
-
-                BitonicSynchronisedTest test = new BitonicSynchronisedTest(numThread, tries, bitonicSize);
-                makeTest(test);
-                times += test.getExecuteTimeInMs();
-            }
-
-            double val = (double) times / nRepeats;
-            printTimeExecute(numThread, (long) val);
-            resultValues.put(numThread, (int) (val) / tries);
-
-        }
-        results.add(new ResultClass("bitonic", resultValues));
+        Integer bitonicSize = 8;
+        makeTest(new BitonicSynchronisedTest.BitonicSynchronisedTestStrategy(),
+                bitonicSize);
     }
 
 
-    private void makeTest(TimeTest test) {
-        test.startTest();
-//        test.printTimeExecute();
+    private void makeTest(TestStrategy strategy, Object specificArg) {
+
+        makeTest2(false, strategy, specificArg); // прогрев
+        makeTest2(true, strategy, specificArg); //с замером времени
+
+
+    }
+
+    private void makeTest2(boolean checkTime, TestStrategy strategy, Object specificArg) {
+        Map<Integer, Double> resultLatVals = new HashMap<>();
+        Map<Integer, Double> resultThrVals = new HashMap<>();
+
+        for (int numThread = 2; numThread <= maxNumThread; numThread++) {
+            long times = 0;
+            for (int nTour = 0; nTour < nRepeats; nTour++) {
+                ArgsTest argsTest = new ArgsTest(numThread, tries, specificArg);
+                TimeTest test = strategy.getTest(argsTest);
+                test.startTest();
+                times += test.getExecuteTimeInMs();
+            }
+
+            if (checkTime) {
+                double valMeanTime = (double) times / nRepeats;
+                printTimeExecute(numThread, (long) valMeanTime);
+                resultLatVals.put(numThread, (double) (tries) / valMeanTime);
+                resultThrVals.put(numThread, (valMeanTime) / tries);
+            }
+        }
+        if (checkTime) {
+            results.add(new ResultData(strategy.getNameTest(), resultLatVals, resultThrVals));
+        }
     }
 
 
     public void printTimeExecute(int numThread, long executeTimeInMs) {
-        System.out.printf("%f, \n", (double) (tries) / executeTimeInMs);
-        System.out.printf("threads: %d  time: %d ns \n", numThread, executeTimeInMs / tries);
-    }
-
-
-    public class ResultClass {
-        String nameTest;
-        Map<Integer, Integer> testResult;
-
-
-        public ResultClass(String nameTest, Map<Integer, Integer> testResult) {
-            this.nameTest = nameTest;
-            this.testResult = testResult;
-        }
-
-        public String getNameTest() {
-            return nameTest;
-        }
-
-        public Map<Integer, Integer> getTestResult() {
-            return testResult;
-        }
+        System.out.printf("threads: %d \n", numThread);
+        System.out.printf("latency %f, \n", (double) (tries) / executeTimeInMs);
+        System.out.printf("throughput %f \n", (double) (executeTimeInMs) / tries);
     }
 
 
     @AfterClass
-    public static void writeFileResult() throws IOException {
+    public static void writeFileResult() {
 
-        String sep = " ";
-        String filePath = "report/" + new Date() + "result.txt";
+        ReportUtil reportUtil = new ReportUtil();
+        try {
+            String file = reportUtil.writeReport(results, maxNumThread);
+            System.out.println("report writed to file " + file);
 
-        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filePath)));
-
-        StringBuffer buffer = new StringBuffer();
-        buffer.append(" " + sep);
-        for (ResultClass result : results) {
-            buffer.append(result.getNameTest() + sep);
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("report didn't write");
         }
 
-        writer.write(buffer.toString());
-        writer.newLine();
-
-        for (int i = 1; i <= maxNumThread; i++) {
-            StringBuffer stringBuffer = new StringBuffer();
-            stringBuffer.append(i + sep);
-            for (ResultClass result : results) {
-                if (result.getTestResult().containsKey(i)) {
-                    stringBuffer.append(result.getTestResult().get(i) + sep);
-                } else {
-                    stringBuffer.append(" " + sep);
-                }
-            }
-            writer.write(stringBuffer.toString());
-            writer.newLine();
-        }
-
-        writer.flush();
-
     }
-
-    public static void main(String[] args) {
-
-        Tests tests = new Tests();
-        tests.treeTest();
-
-
-    }
-
 
 }

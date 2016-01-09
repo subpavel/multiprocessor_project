@@ -32,11 +32,7 @@ public class Tree implements CountingStructure {
 
     public int getAndIncrement() throws InterruptedException {
         Stack<Node> stack = new Stack<Node>();
-//        CountingTreeThread thread = ;
-//        int enter = (((CountingTreeThread) Thread.currentThread()).getThreadId() / 2) % leaf.length;
-
-        Node myLeaf = leaf[(((CountingTreeThread) Thread.currentThread()).getThreadId() / 2) % leaf.length];
-//                .getThreadId())%(size + 1) / 2 /2];//ThreadID.get() / 2];
+        Node myLeaf = leaf[(((CountingTreeThread) Thread.currentThread()).getThreadId() / 2)];
         Node node = myLeaf;
         // phase one
         while (node.precombine()) {
@@ -64,11 +60,7 @@ public class Tree implements CountingStructure {
     @Override
     public int traverse(int input) throws InterruptedException {
         Stack<Node> stack = new Stack<Node>();
-//        CountingTreeThread thread = ;
-//        int enter = (((CountingTreeThread) Thread.currentThread()).getThreadId() / 2) % leaf.length;
-
-        Node myLeaf = leaf[input/2];
-//                .getThreadId())%(size + 1) / 2 /2];//ThreadID.get() / 2];
+        Node myLeaf = leaf[input / 2];
         Node node = myLeaf;
         // phase one
         while (node.precombine()) {
@@ -91,7 +83,6 @@ public class Tree implements CountingStructure {
             node.distribute(prior);
         }
         return prior;
-
 
 
 //        System.out.println("don't support this function for tree");
