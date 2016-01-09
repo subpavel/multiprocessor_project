@@ -1,18 +1,17 @@
 package ru.sbt.mipt.structure;
 
-import ru.sbt.mipt.structure.tree.Tree;
 
 /**
  * Created by Anton on 08.01.16.
  */
 public class ThreadArg {
     private final int threadId;
-    private final CountingStructure counterTree;
+    private final CountingStructure countingStructure;
     private final int countTimesRepOp;
 
-    public ThreadArg(int threadId, CountingStructure counterTree, int countTimesRepOp) {
+    public ThreadArg(int threadId, CountingStructure countingStructure, int countTimesRepOp) {
         this.threadId = threadId;
-        this.counterTree = counterTree;
+        this.countingStructure = countingStructure;
         this.countTimesRepOp = countTimesRepOp;
     }
 
@@ -20,8 +19,8 @@ public class ThreadArg {
         return threadId;
     }
 
-    public CountingStructure getCounterTree() {
-        return counterTree;
+    public CountingStructure getCountingStructure() {
+        return countingStructure;
     }
 
     public int getCountTimesRepOp() {

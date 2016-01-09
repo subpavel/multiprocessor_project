@@ -1,21 +1,19 @@
 package ru.sbt.mipt.structure.baseline;
 
+import ru.sbt.mipt.structure.CountingStructure;
+
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Created by Anton on 06.01.16.
+ * Implementation of simple counting with build-in atomic integer
  */
-public class AtomicIntegerIncrement implements BaseSynchronizedIncrement{
+public class AtomicIntegerIncrement implements CountingStructure {
 
     private AtomicInteger value = new AtomicInteger(0);
 
-    public int getAndIncrement(int increment) {
-        return value.getAndAdd(increment);
-    }
-
     @Override
-    public int getAndIncrement() throws InterruptedException {
-        return getAndIncrement(1);
+    public int getAndIncrement() {
+        return value.getAndIncrement();
     }
 
     @Override

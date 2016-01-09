@@ -1,30 +1,30 @@
 package ru.sbt.mipt.structure.bitonic;
 
 /**
- * Created by PavelSub on 1/6/2016.
+ * Implementation of Balancer from the book
  */
 public class Balancer implements Network {
-  Boolean toggle;
-  
-  public Balancer() {
-    toggle = true;
-  }
+    private Boolean toggle;
 
-  @Override
-  public int getAndIncrement() throws InterruptedException {
-    return 0;
-  }
-
-  public synchronized int traverse(int input) {
-    try {
-      if (toggle) {
-        return 0;
-      } else {
-        return 1;
-      }
-    } finally {
-      toggle = !toggle;
+    public Balancer() {
+        toggle = true;
     }
-  }
-  
+
+    @Override
+    public int getAndIncrement() throws InterruptedException {
+        return 0;
+    }
+
+    public synchronized int traverse(int input) {
+        try {
+            if (toggle) {
+                return 0;
+            } else {
+                return 1;
+            }
+        } finally {
+            toggle = !toggle;
+        }
+    }
+
 }

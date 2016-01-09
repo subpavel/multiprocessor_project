@@ -22,6 +22,7 @@ public abstract class TimeTest {
     protected CountingThread[] myThreads;
 
     protected long difTime = 0;
+    protected double latency = 0;
 
     protected void prepareTest() {
         executor = Executors.newFixedThreadPool(numThread);
@@ -59,6 +60,10 @@ public abstract class TimeTest {
             difTime += myThreads[i].difTime;
         }
 
+        for (int i = 0; i < numThread; i++) {
+            latency += myThreads[i].latency/numThread;
+        }
+
     }
 
     public void startTest() {
@@ -81,6 +86,10 @@ public abstract class TimeTest {
 
     public long getAllThreadTime() {
         return difTime / numThread;
+    }
+
+    public double getLatency() {
+        return latency;
     }
 
     public void printTimeExecute() {

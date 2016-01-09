@@ -12,7 +12,7 @@ import java.io.*;
 import java.util.*;
 
 /**
- * Created by Anton on 05.01.16.
+ * Main class for performing tests
  */
 
 
@@ -70,17 +70,19 @@ public class Tests {
 
         for (int numThread = 2; numThread <= maxNumThread; numThread++) {
             long times = 0;
+            double latency = 0;
             for (int nTour = 0; nTour < nRepeats; nTour++) {
                 ArgsTest argsTest = new ArgsTest(numThread, tries, specificArg);
                 TimeTest test = strategy.getTest(argsTest);
                 test.startTest();
                 times += test.getExecuteTimeInMs();
+                latency += test.getLatency()/nRepeats;
             }
 
             if (checkTime) {
                 double valMeanTime = (double) times / nRepeats;
-                printTimeExecute(numThread, (long) valMeanTime);
-                resultLatVals.put(numThread, (double) (tries) / valMeanTime);
+                printTimeExecute(numThread, (long) valMeanTime, latency);
+                resultLatVals.put(numThread, latency);
                 resultThrVals.put(numThread, (valMeanTime) / tries);
             }
         }
@@ -90,9 +92,9 @@ public class Tests {
     }
 
 
-    public void printTimeExecute(int numThread, long executeTimeInMs) {
+    public void printTimeExecute(int numThread, long executeTimeInMs, double latency) {
         System.out.printf("threads: %d \n", numThread);
-        System.out.printf("latency %f, \n", (double) (tries) / executeTimeInMs);
+        System.out.printf("latency %f, \n", latency);
         System.out.printf("throughput %f \n", (double) (executeTimeInMs) / tries);
     }
 

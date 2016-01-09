@@ -1,25 +1,21 @@
 package ru.sbt.mipt.structure.baseline;
 
-/**
- * Created by Anton on 06.01.16.
- */
-public class IntegerSychronisedIncrement implements BaseSynchronizedIncrement {
+import ru.sbt.mipt.structure.CountingStructure;
 
+/**
+ * Implementation of simple counting with synchronized integer
+ */
+public class IntegerSychronisedIncrement implements CountingStructure {
 
     private int value = 0;
 
-    public synchronized int getAndIncrement(int increment) {
+    @Override
+    public synchronized int getAndIncrement() {
         int temp = value;
-        value += increment;
-//        System.out.printf("increment: %d value: %d \n", increment, temp);
+        value++;
         return temp;
     }
 
-
-    @Override
-    public int getAndIncrement() throws InterruptedException {
-        return getAndIncrement(1);
-    }
 
     @Override
     public int traverse(int input) {

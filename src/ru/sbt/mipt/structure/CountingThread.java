@@ -16,6 +16,8 @@ public abstract class CountingThread extends Thread {
 
     public long difTime = 0;
 
+    public double latency = 0.0;
+
     protected abstract int doOperation() throws InterruptedException;
 
     public int getThreadId() {
@@ -31,8 +33,11 @@ public abstract class CountingThread extends Thread {
         int value;
         try {
             long starTime = System.nanoTime();
-            for (int i = 0; i < argThread.getCountTimesRepOp(); i++) {
+            int N = argThread.getCountTimesRepOp();
+            for (int i = 0; i < N; i++) {
+                long latencyStart = System.nanoTime();
                 value = doOperation();
+                latency += (System.nanoTime() - latencyStart)/N;
 //            System.out.println("Thread " + threadId + ": " + value);
             }
             difTime = System.nanoTime() - starTime;

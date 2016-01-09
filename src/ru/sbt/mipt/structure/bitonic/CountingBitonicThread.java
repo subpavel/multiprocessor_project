@@ -7,9 +7,10 @@ public class CountingBitonicThread extends CountingThread {
     public CountingBitonicThread(ThreadArg arg) {
         super(arg);
     }
+
     @Override
     protected int doOperation() throws InterruptedException {
-        return argThread.getCounterTree().traverse(
+        return argThread.getCountingStructure().traverse(
                 argThread.getThreadId()
         );
     }

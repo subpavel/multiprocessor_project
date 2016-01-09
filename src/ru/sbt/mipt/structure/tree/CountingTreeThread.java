@@ -16,7 +16,7 @@ public class CountingTreeThread extends CountingThread {
     @Override
     protected int doOperation() {
         try {
-            return argThread.getCounterTree().traverse(getThreadId()); //getAndIncrement();
+            return argThread.getCountingStructure().traverse(getThreadId()); //getAndIncrement();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

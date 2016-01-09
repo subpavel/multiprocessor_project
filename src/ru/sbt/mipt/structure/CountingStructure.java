@@ -5,7 +5,7 @@ package ru.sbt.mipt.structure;
  */
 public interface CountingStructure {
 
-    public int getAndIncrement() throws InterruptedException;
+    int getAndIncrement() throws InterruptedException;
 
-    public int traverse(int input) throws InterruptedException;
+    int traverse(int input) throws InterruptedException;
 }

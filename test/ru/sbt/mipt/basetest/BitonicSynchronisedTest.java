@@ -8,8 +8,6 @@ import ru.sbt.mipt.structure.ThreadArg;
 import ru.sbt.mipt.structure.bitonic.Bitonic;
 import ru.sbt.mipt.structure.bitonic.CountingBitonicThread;
 
-import java.util.concurrent.Callable;
-
 /**
  * Created by PavelSub on 1/6/2016.
  */
@@ -47,9 +45,9 @@ public class BitonicSynchronisedTest extends TimeTest {
     }
 
 
-    public static  class BitonicSynchronisedTestStrategy implements TestStrategy {
+    public static class BitonicSynchronisedTestStrategy implements TestStrategy {
 
-        String nameTest = "Bitonic Test";
+        String nameTest = "BITONIC";
 
         @Override
         public TimeTest getTest(ArgsTest argsTest) {

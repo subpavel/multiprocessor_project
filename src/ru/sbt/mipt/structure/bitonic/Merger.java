@@ -1,23 +1,23 @@
 package ru.sbt.mipt.structure.bitonic;
 
 /**
- * Created by PavelSub on 1/6/2016.
+ * Implementation of Merger from the book
  */
 public class Merger implements Network {
     // two half-size merger networks
-    Merger[] half;
+    private Merger[] half;
     // output i from each half-size mergers goes to layer[i]
-    Balancer[] layer;
-    final int size;
+    private Balancer[] layer;
+    private final int size;
 
-    public Merger(int _size) {
-        size = _size;
-        layer = new Balancer[size / 2];
-        for (int i = 0; i < size / 2; i++) {
+    public Merger(int size) {
+        this.size = size;
+        layer = new Balancer[this.size / 2];
+        for (int i = 0; i < this.size / 2; i++) {
             layer[i] = new Balancer();
         }
-        if (size > 2) {
-            half = new Merger[]{new Merger(size / 2), new Merger(size / 2)};
+        if (this.size > 2) {
+            half = new Merger[]{new Merger(this.size / 2), new Merger(this.size / 2)};
         }
     }
 

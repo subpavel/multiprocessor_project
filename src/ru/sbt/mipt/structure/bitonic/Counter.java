@@ -3,12 +3,12 @@ package ru.sbt.mipt.structure.bitonic;
 import ru.sbt.mipt.structure.bitonic.Balancer;
 
 /**
- * Created by PavelSub on 1/6/2016.
+ * Implementation of Counter from the book
  */
 public class Counter extends Balancer {
 
-    int state;
-    final int width;
+    private int state;
+    private final int width;
 
     /**
      * Creates a new instance of Counter

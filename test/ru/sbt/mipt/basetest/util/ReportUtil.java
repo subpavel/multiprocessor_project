@@ -48,7 +48,7 @@ public class ReportUtil {
 
     private void writeHeader(List<ResultData> results, BufferedWriter writer) throws IOException {
         StringBuffer buffer = new StringBuffer();
-        buffer.append("# thred" + sep);
+        buffer.append("#thred" + sep);
         for (ResultData result : results) {
             buffer.append(result.getNameTest()+"lat" + sep);
             buffer.append(result.getNameTest()+"thr" + sep);

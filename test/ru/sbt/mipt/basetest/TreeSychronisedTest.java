@@ -46,7 +46,7 @@ public class TreeSychronisedTest extends TimeTest {
 
 
     public static class TreeTestStrategy implements TestStrategy {
-        String nameTest = "Combining tree";
+        String nameTest = "TREE";
 
         @Override
         public TimeTest getTest(ArgsTest argsTest) {

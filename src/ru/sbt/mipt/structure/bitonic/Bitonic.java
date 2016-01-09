@@ -1,14 +1,14 @@
 package ru.sbt.mipt.structure.bitonic;
 
 /**
- * Created by PavelSub on 1/6/2016.
+ * Implementation of Bitonic network from the book
  */
 public class Bitonic implements Network {
     // two half-size bitonic networks
-    Bitonic[] half;
+    private Bitonic[] half;
     // output i from each half-size mergers goes to layer[i]
-    Merger layer;
-    final int size;
+    private Merger layer;
+    private final int size;
 
     public Bitonic(int _size) {
         size = _size;
@@ -20,7 +20,7 @@ public class Bitonic implements Network {
 
     @Override
     public int getAndIncrement() throws InterruptedException {
-        System.out.println("don't support");
+        System.out.println("No support");
         return 0;
     }
 

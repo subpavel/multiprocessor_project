@@ -3,10 +3,10 @@ package ru.sbt.mipt.basetest;
 import ru.sbt.mipt.basetest.test.ArgsTest;
 import ru.sbt.mipt.basetest.test.TestStrategy;
 import ru.sbt.mipt.basetest.test.TimeTest;
+import ru.sbt.mipt.structure.CountingStructure;
 import ru.sbt.mipt.structure.CountingThread;
 import ru.sbt.mipt.structure.ThreadArg;
 import ru.sbt.mipt.structure.baseline.AtomicIntegerIncrement;
-import ru.sbt.mipt.structure.baseline.BaseSynchronizedIncrement;
 import ru.sbt.mipt.structure.baseline.CountingBaseThread;
 import ru.sbt.mipt.structure.baseline.IntegerSychronisedIncrement;
 
@@ -20,8 +20,7 @@ public class BaseSynchronizedTest extends TimeTest {
 
     //defult value
 
-
-    private BaseSynchronizedIncrement increment;
+    private CountingStructure increment;
     private IncrementType incrementType;
 
 
