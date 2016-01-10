@@ -7,6 +7,8 @@ import ru.sbt.mipt.structure.ThreadArg;
 import ru.sbt.mipt.structure.tree.CountingTreeThread;
 import ru.sbt.mipt.structure.tree.Tree;
 
+import java.util.concurrent.CyclicBarrier;
+
 /**
  * Created by Anton on 06.01.16.
  */
@@ -28,6 +30,7 @@ public class TreeSychronisedTest extends TimeTest {
     protected void prepareTest() {
 //        super.prepareTest();
         tree = new Tree(numThread);
+        barrier = new CyclicBarrier(numThread);
 //        (int) (numThread * Math.log(numThread)));
         myThreads = new ru.sbt.mipt.structure.CountingThread[numThread];
         for (int index = 0; index < numThread; index++) {

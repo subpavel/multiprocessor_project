@@ -39,14 +39,12 @@ public abstract class CountingThread extends Thread {
             for (int i = 0; i < N; i++) {
                 long latencyStart = System.nanoTime();
                 value = doOperation();
-                latency += (System.nanoTime() - latencyStart) / N;
+                latency += (System.nanoTime() - latencyStart) * 1.0 / N;
 //            System.out.println("Thread " + threadId + ": " + value);
             }
             difTime = System.nanoTime() - starTime;
-        } catch (PanicException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        } catch (PanicException | InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -54,10 +52,8 @@ public abstract class CountingThread extends Thread {
         try {
 //            System.out.println("wait other");
             argThread.getCyclicBarrier().await();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (BrokenBarrierException e) {
-            e.printStackTrace();
+        } catch (InterruptedException | BrokenBarrierException e) {
+            throw new RuntimeException(e);
         }
 
 //        System.out.println("contuniu work thread");

@@ -76,7 +76,7 @@ public class Tests {
                 TimeTest test = strategy.getTest(argsTest);
                 test.startTest();
                 times += test.getExecuteTimeInMs();
-                latency += test.getLatency() / nRepeats;
+                latency += test.getLatency() * 1.0 / nRepeats;
             }
 
             if (checkTime) {

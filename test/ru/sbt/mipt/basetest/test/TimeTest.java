@@ -25,7 +25,7 @@ public abstract class TimeTest {
 
     protected void prepareTest() {
 //        executor = Executors.newFixedThreadPool(numThread);
-        barrier = new CyclicBarrier(numThread);
+
 
     }
 

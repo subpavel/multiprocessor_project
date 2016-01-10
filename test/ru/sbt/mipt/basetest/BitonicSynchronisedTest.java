@@ -8,6 +8,8 @@ import ru.sbt.mipt.structure.ThreadArg;
 import ru.sbt.mipt.structure.bitonic.Bitonic;
 import ru.sbt.mipt.structure.bitonic.CountingBitonicThread;
 
+import java.util.concurrent.CyclicBarrier;
+
 /**
  * Created by PavelSub on 1/6/2016.
  */
@@ -27,11 +29,11 @@ public class BitonicSynchronisedTest extends TimeTest {
 
     @Override
     protected void prepareTest() {
-        super.prepareTest();
+        barrier = new CyclicBarrier(numThread);
         myThreads = new CountingThread[numThread];
         bitonic = new Bitonic(size);
         for (int index = 0; index < numThread; index++) {
-            myThreads[index] = new CountingBitonicThread(new ThreadArg(index, bitonic, tries / numThread, barrier));
+            myThreads[index] = new CountingBitonicThread(new ThreadArg(index, bitonic, tries / numThread, barrier), size);
         }
 
     }

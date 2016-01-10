@@ -10,6 +10,8 @@ import ru.sbt.mipt.structure.baseline.AtomicIntegerIncrement;
 import ru.sbt.mipt.structure.baseline.CountingBaseThread;
 import ru.sbt.mipt.structure.baseline.IntegerSychronisedIncrement;
 
+import java.util.concurrent.CyclicBarrier;
+
 /**
  * Created by Anton on 06.01.16.
  */
@@ -35,7 +37,7 @@ public class BaseSynchronizedTest extends TimeTest {
 
     @Override
     protected void prepareTest() {
-        super.prepareTest();
+        barrier = new CyclicBarrier(numThread);
         switch (incrementType) {
             case ATOMIC_INTEGER:
                 increment = new AtomicIntegerIncrement();
