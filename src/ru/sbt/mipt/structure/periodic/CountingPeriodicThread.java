@@ -19,8 +19,8 @@ public class CountingPeriodicThread extends CountingThread {
     @Override
     protected int doOperation() throws InterruptedException {
         return argThread.getCountingStructure().traverse(
-                //r.nextInt(bitonicSize)//
-                argThread.getThreadId() % periodicSize
+                r.nextInt(periodicSize)//
+//                argThread.getThreadId() % periodicSize
         );
     }
 
