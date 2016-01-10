@@ -70,6 +70,30 @@ public class Tests {
                 bitonicSize);
     }
 
+    @Test
+    public void periodic2Test() {
+
+        Integer periodicSize = 2;
+        makeTest(new PeriodicSynchronisedTest.PeriodicSynchronisedTestStrategy(periodicSize),
+                periodicSize);
+    }
+
+    @Test
+    public void periodic4Test() {
+
+        Integer periodicSize = 4;
+        makeTest(new PeriodicSynchronisedTest.PeriodicSynchronisedTestStrategy(periodicSize),
+                periodicSize);
+    }
+
+    @Test
+    public void periodic8Test() {
+
+        Integer periodicSize = 8;
+        makeTest(new PeriodicSynchronisedTest.PeriodicSynchronisedTestStrategy(periodicSize),
+                periodicSize);
+    }
+
 
     private void makeTest(TestStrategy strategy, Object specificArg) {
 
