@@ -16,12 +16,12 @@ public class ReportUtil {
 
     private final String sep = " ";
     private final String filePath = "report/";
-    private final String fileSuff = "report/";
+    private final String fileSuff = "result.txt";
 
 
     public String writeReport(List<ResultData> results, int maxNumThread) throws IOException {
-        DateFormat dateFormat = new SimpleDateFormat("dd_MM_yy__HH:mm:ss_");
-        String file = "report/" + dateFormat.format(new Date()) + "result.txt";
+        DateFormat dateFormat = new SimpleDateFormat("dd_MM_yy__HH_mm_ss_");
+        String file = filePath + dateFormat.format(new Date()) + fileSuff;
         BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file)));
         writeHeader(results, writer);
         writeTable(results, maxNumThread, writer);
