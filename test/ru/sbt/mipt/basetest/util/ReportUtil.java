@@ -4,6 +4,8 @@ import ru.sbt.mipt.basetest.Tests;
 import ru.sbt.mipt.basetest.test.ResultData;
 
 import java.io.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -18,7 +20,8 @@ public class ReportUtil {
 
 
     public String writeReport(List<ResultData> results, int maxNumThread) throws IOException {
-        String file = "report/" + new Date() + "result.txt";
+        DateFormat dateFormat = new SimpleDateFormat("dd_MM_yy__HH:mm:ss_");
+        String file = "report/" + dateFormat.format(new Date()) + "result.txt";
         BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file)));
         writeHeader(results, writer);
         writeTable(results, maxNumThread, writer);
@@ -50,8 +53,8 @@ public class ReportUtil {
         StringBuffer buffer = new StringBuffer();
         buffer.append("#thred" + sep);
         for (ResultData result : results) {
-            buffer.append(result.getNameTest()+"lat" + sep);
-            buffer.append(result.getNameTest()+"thr" + sep);
+            buffer.append(result.getNameTest() + "lat" + sep);
+            buffer.append(result.getNameTest() + "thr" + sep);
         }
 
         writeLine(writer, buffer);
