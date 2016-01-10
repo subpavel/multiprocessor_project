@@ -48,8 +48,13 @@ public class BitonicSynchronisedTest extends TimeTest {
 
 
     public static class BitonicSynchronisedTestStrategy implements TestStrategy {
+        
+        private int bitonicSize;
 
-        String nameTest = "BITONIC";
+        public BitonicSynchronisedTestStrategy(int bitonicSize) {
+            this.bitonicSize = bitonicSize;
+        }
+
 
         @Override
         public TimeTest getTest(ArgsTest argsTest) {
@@ -58,7 +63,7 @@ public class BitonicSynchronisedTest extends TimeTest {
 
         @Override
         public String getNameTest() {
-            return nameTest;
+            return "BITONIC" + bitonicSize;
         }
     }
 

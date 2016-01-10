@@ -39,7 +39,6 @@ public class Tests {
     }
 
 
-    @Test
     public void treeTest() {
         makeTest(new TreeSychronisedTest.TreeTestStrategy(),
                 null
@@ -48,10 +47,26 @@ public class Tests {
     }
 
     @Test
-    public void bitonicTest() {
+    public void bitonic2Test() {
+
+        Integer bitonicSize = 2;
+        makeTest(new BitonicSynchronisedTest.BitonicSynchronisedTestStrategy(bitonicSize),
+                bitonicSize);
+    }
+
+    @Test
+    public void bitonic4Test() {
+
+        Integer bitonicSize = 4;
+        makeTest(new BitonicSynchronisedTest.BitonicSynchronisedTestStrategy(bitonicSize),
+                bitonicSize);
+    }
+
+    @Test
+    public void bitonic8Test() {
 
         Integer bitonicSize = 8;
-        makeTest(new BitonicSynchronisedTest.BitonicSynchronisedTestStrategy(),
+        makeTest(new BitonicSynchronisedTest.BitonicSynchronisedTestStrategy(bitonicSize),
                 bitonicSize);
     }
 
